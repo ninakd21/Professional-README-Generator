@@ -72,7 +72,7 @@ const questions = [
 ];
 
 // TODO: Create a function to write README file
-function writeToFile( fileName, questions, err) {
+function writeToFile(fileName, data, err) {
         if (err) {
           return console.log(err);
         }
@@ -87,4 +87,3 @@ function init() {
 
 // Function call to initialize app
 init();
-
