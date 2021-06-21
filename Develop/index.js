@@ -3,9 +3,7 @@
  const inquirer = require('inquirer');
 const generateMarkdown = require('./utils/generateMarkdown.js');
  // TODO: Create an array of questions for user input
- const questions = () => {
-
-     return inquirer.prompt([
+ const questions = [
      {
          type: 'input',
          name: 'title',
@@ -71,32 +69,20 @@ const generateMarkdown = require('./utils/generateMarkdown.js');
          when: ({ confirmLicense }) => confirmLicense,
          choices: ['JavaScript', 'HTML', 'CSS', 'ES6', 'jQuery', 'Bootstrap', 'Node']
        },  
- ])
-     .then(function(data) {
-     const filename =
-       data.title
-       .toLowerCase()
-       .split(' ')
-       .join('') + '.md';
- // TODO: Create a function to write README file
-     fs.writeFile(filename, JSON.stringify(data, null, '\t'), function(err) {
-         if (err) {
-           return console.log(err);
-         }
-       
-         console.log("Success! Your README.md file has been generated")
-     });
- });
- };
+ ]
 
-questions()
-.then(questions => {
-    return generateMarkdown(questions);
-    })
-    
- .then(filename =>{
-     return fs.writeFile(filename)
- })
- .catch(err => {
-    console.log(err);
-  });
+// function to initialize app
+function init() {
+    inquirer
+     .prompt(questions)
+     .then(data => {
+         const pageReadme = generateMarkdown(data);
+         fs.writeFile(data.title + '.md', pageReadme, err => {
+             if (err) throw new Error(err);
+             console.log('Readme created! Check out README.md in this directory to see it')
+         })
+        })
+}
+
+// Function call to initialize app
+init();
