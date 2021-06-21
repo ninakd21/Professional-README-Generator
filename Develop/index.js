@@ -1,9 +1,10 @@
  // TODO: Include packages needed for this application
  const fs = require('fs');
  const inquirer = require('inquirer');
- 
+const generateMarkdown = require('./utils/generateMarkdown.js');
  // TODO: Create an array of questions for user input
  const questions = () => {
+
      return inquirer.prompt([
      {
          type: 'input',
@@ -69,14 +70,14 @@
          message: 'What license would you like to apply? (Check all that apply)',
          when: ({ confirmLicense }) => confirmLicense,
          choices: ['JavaScript', 'HTML', 'CSS', 'ES6', 'jQuery', 'Bootstrap', 'Node']
-       },
+       },  
  ])
      .then(function(data) {
      const filename =
        data.title
        .toLowerCase()
        .split(' ')
-       .join('') + '.json';
+       .join('') + '.md';
  // TODO: Create a function to write README file
      fs.writeFile(filename, JSON.stringify(data, null, '\t'), function(err) {
          if (err) {
@@ -87,5 +88,15 @@
      });
  });
  };
+
 questions()
- 
+.then(questions => {
+    return generateMarkdown(questions);
+    })
+    
+ .then(filename =>{
+     return fs.writeFile(filename)
+ })
+ .catch(err => {
+    console.log(err);
+  });
