@@ -4,6 +4,7 @@ const inquirer = require('inquirer');
 const generateMarkdown = require('./utils/generateMarkdown.js');
 // TODO: Create an array of questions for user input
 const questions = [
+    // User information
     {
         type: 'input',
         name: 'name',
@@ -47,8 +48,8 @@ const questions = [
         type: 'input',
         name: 'githubLink',
         message: 'Enter your GitHub Link (Required)',
-        validate: githubInput => {
-            if (githubInput) {
+        validate: githubLinkInput => {
+            if (githubLinkInput) {
                 return true;
             } else {
                 console.log('Please enter your GitHub Link!');
@@ -57,6 +58,7 @@ const questions = [
         }
     },
     {
+        // Project information
         type: 'input',
         name: 'title',
         message: 'What is your Project Title? (Required)',
@@ -86,8 +88,8 @@ const questions = [
         type: 'input',
         name: 'instalattionInstructions',
         message: 'Please provide a list of the Steps for Installation (Required)',
-        validate: nameInput => {
-            if (nameInput) {
+        validate: instalattionInstructionsInput => {
+            if (instalattionInstructionsInput) {
                 return true;
             } else {
                 console.log('Please enter your Installation Instructions!');
@@ -114,8 +116,8 @@ const questions = [
         type: 'input',
         name: 'ussageInformation',
         message: 'What is the Usage Information (Required)',
-        validate: nameInput => {
-            if (nameInput) {
+        validate: ussageInformationInput => {
+            if (ussageInformationInput) {
                 return true;
             } else {
                 console.log('Please enter your Usage Information!');
@@ -141,18 +143,21 @@ const questions = [
         name: 'tests',
         message: 'Add any tests that you conducted',
     },
-    {
-        type: 'confirm',
-        name: 'confirmLicense',
-        message: 'Would you like to add a license?',
-    },
+    // License information
     {
         type: 'checkbox',
         name: 'license',
         message: 'What license would you like to apply? (Check all that apply)',
-        when: ({ confirmLicense }) => confirmLicense,
-        choices: ['Apache 2.0', 'GNU GPLv3', 'MIT', 'ISC',]
+        choices: ['Apache 2.0', 'GNU GPLv3', 'MIT', 'ISC',],
+        validate: licenseInput => {
+            if (licenseInput.length <= 1) {
+                return true;
+            } else {
+                console.log('Please select ONE or none');
+                return false;
+            }
     },
+},
 ]
 
 // function to initialize app
